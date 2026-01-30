@@ -13,16 +13,20 @@ def get_ticker(company_name):
     symbols = list(search.tickers.keys())
     return symbols[0] if symbols else None
 
+@st.cache_data(ttl=3600)
 def fetch_stock_data(ticker, period="5y"):
-    # Try NSE
+    time.sleep(1)
+
     data = yf.Ticker(ticker + ".NS").history(period=period)
-    # Try BSE
+
     if data.empty:
         data = yf.Ticker(ticker + ".BO").history(period=period)
-    # Try generic (US/global)
+
     if data.empty:
         data = yf.Ticker(ticker).history(period=period)
+
     return data
+
 
 def calculate_daily_returns(data):
     return data.pct_change().dropna()
@@ -44,8 +48,11 @@ def calculate_max_drawdown(data):
     drawdown = cumulative - 1
     return drawdown.min()
 
+@st.cache_data(ttl=3600)
 def fetch_market_data(period="5y"):
+    time.sleep(1)
     return yf.Ticker("^NSEI").history(period=period)
+
 
 def calculate_beta(stock_returns, market_returns):
     cov = np.cov(stock_returns, market_returns)[0][1]
