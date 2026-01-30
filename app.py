@@ -101,8 +101,8 @@ if analyze and company_name:
                 cumulative_returns = calculate_cumulative_returns(returns)
                 cagr = calculate_cagr(data)
                 vol = calculate_volatility(returns).values[0]
-              mdd = calculate_max_drawdown(data)
-              mdd = mdd.item()
+                mdd = calculate_max_drawdown(data)
+                mdd = mdd.item()
 
 
                 # Market & Beta
